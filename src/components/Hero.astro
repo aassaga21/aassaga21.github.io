@@ -1,0 +1,93 @@
+---
+const lines = [
+  { cmd: 'whoami' },
+  { out: 'alexandra · cloud & network engineer (en formation)' },
+  { cmd: 'terraform apply -auto-approve' },
+  { out: 'openstack_compute_instance.vm: Creating...' },
+  { out: 'Apply complete!', ok: true },
+  { cmd: 'ansible-playbook site.yml' },
+  { out: 'PLAY RECAP · failed=0', ok: true },
+];
+---
+
+<section class="container hero" id="top">
+  <div class="intro">
+    <p class="badge"><span class="dot"></span>Disponible en alternance dès octobre 2026 · Genève & France voisine</p>
+    <h1>Alexandra ASSAGA</h1>
+    <p class="role">Cloud, Réseau & Automatisation</p>
+    <p class="pitch">
+      Étudiante en 3e année de Bachelor Systèmes et Réseaux au Geneva Institute of Technology.
+      Je conçois des infrastructures hybrides et j'automatise leur déploiement avec Terraform et Ansible.
+    </p>
+    <div class="actions">
+      <a href="#projets" class="btn primary">Voir mes projets →</a>
+      <a href="/cv.pdf" class="btn secondary" download>Télécharger mon CV</a>
+    </div>
+    <div class="socials">
+      <a href="https://github.com/aassaga21">GitHub</a>
+      <a href="https://linkedin.com/in/alexandra-assaga">LinkedIn</a>
+      <a href="https://hackmd.io/@Alexandra-ASSAGA">HackMD</a>
+    </div>
+  </div>
+
+  <div class="terminal" aria-label="Exemple de commandes d'automatisation">
+    <div class="bar">
+      <span style="background:#F07178"></span>
+      <span style="background:#F2C46D"></span>
+      <span style="background:#3DDC97"></span>
+      <em>~/infra</em>
+    </div>
+    <div class="screen">
+      {lines.map((l, i) => (
+        <div class="line" style={`--i:${i}`}>
+          {l.cmd ? <><b>$</b> {l.cmd}</> : <span class={l.ok ? 'ok' : 'out'}>{l.out}</span>}
+        </div>
+      ))}
+      <div class="line" style={`--i:${lines.length}`}><b>$</b> <i class="cursor"></i></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { display: flex; flex-wrap: wrap; gap: 56px; align-items: center; padding-top: 96px; padding-bottom: 80px; }
+  .intro { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+  .badge {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; margin: 0;
+    padding: 8px 14px; border: 1px solid #1F4D45; background: #0E2420; border-radius: 999px;
+    font-size: 14px; color: #8FE3C8;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+  h1 { font-size: clamp(40px, 6vw, 68px); letter-spacing: -0.02em; }
+  .role { margin: 0; font-family: var(--font-display); font-size: clamp(22px, 2.6vw, 30px); color: var(--accent); }
+  .pitch { margin: 0; max-width: 560px; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 10px; font-weight: 600; }
+  .primary { background: var(--accent); color: var(--bg); }
+  .primary:hover { color: var(--bg); filter: brightness(1.1); }
+  .secondary { border: 1px solid #2A3B57; color: var(--text); }
+  .socials { display: flex; gap: 20px; }
+  .socials a { color: var(--muted); font-size: 15px; }
+
+  .terminal {
+    flex: 1 1 400px; min-width: 0; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+  .bar span { width: 11px; height: 11px; border-radius: 50%; }
+  .bar em { margin-left: 10px; font-family: var(--font-mono); font-size: 13px; font-style: normal; color: #6F819C; }
+  .screen { padding: 22px; font-family: var(--font-mono); font-size: 14.5px; line-height: 1.85; color: #C9D4E5; }
+  .screen b { color: var(--accent); font-weight: 400; }
+  .out { color: #8FA0B8; }
+  .ok { color: var(--success); }
+
+  .line { opacity: 0; animation: appear 0.3s ease forwards; animation-delay: calc(var(--i) * 0.45s); }
+  @keyframes appear { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .cursor { display: inline-block; width: 9px; height: 18px; background: var(--accent); vertical-align: -3px; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line { animation: none; opacity: 1; }
+    .cursor { animation: none; }
+  }
+</style>

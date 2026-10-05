@@ -1,0 +1,42 @@
+---
+const links = [
+  { href: '#projets', label: 'Projets' },
+  { href: '#competences', label: 'Compétences' },
+  { href: '#parcours', label: 'Parcours' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="header">
+  <nav class="container nav">
+    <a href="/" class="logo">alex@assaga<span>:~$</span></a>
+    <ul>
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(11, 18, 32, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .logo { font-family: var(--font-mono); color: var(--text); font-weight: 500; }
+  .logo span { color: var(--accent); }
+  ul { display: flex; flex-wrap: wrap; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  ul a { color: var(--muted); font-size: 15px; }
+  ul a:hover { color: var(--text); }
+</style>
