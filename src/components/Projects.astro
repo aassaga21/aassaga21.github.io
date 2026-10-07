@@ -1,0 +1,72 @@
+---
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+
+const modules = import.meta.glob('../data/projets/*.md', { eager: true });
+
+const projects = Object.entries(modules)
+  .map(([path, mod]: [string, any]) => ({
+    slug: path.split('/').pop()!.replace('.md', ''),
+    ...mod.frontmatter,
+  }))
+  .sort((a, b) => a.order - b.order);
+
+const shown = limit ? projects.slice(0, limit) : projects;
+const hasMore = limit && projects.length > limit;
+---
+
+<section class="container projects" id="projets">
+  <div class="head">
+    <div>
+      <p class="label">01 / projets</p>
+      <h2>{limit ? 'Projets à la une' : 'Tous mes projets'}</h2>
+    </div>
+    {hasMore && <a href="/projets" class="all">Tous les projets</a>}
+  </div>
+
+  <div class="grid">
+    {shown.map((p) => (
+      <a class="card" href={`/projets/${p.slug}`}>
+        <div class="schema">[schéma d'architecture]</div>
+        <p class="kind">{p.kind}</p>
+        <h3>{p.title}</h3>
+        <p class="summary">{p.summary}</p>
+        <div class="tags">
+          {p.tags.map((t: string) => <span>{t}</span>)}
+        </div>
+        <span class="more">Lire l'étude de cas →</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .projects { padding-top: 64px; padding-bottom: 64px; scroll-margin-top: 70px; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 36px; }
+  .label { margin: 0 0 8px; font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+  h2 { font-size: 40px; }
+  .all { font-weight: 600; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card {
+    display: flex; flex-direction: column; gap: 14px; padding: 24px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    color: var(--text); transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); color: var(--text); }
+  .schema {
+    height: 150px; border-radius: 10px; border: 1px dashed #2A3B57; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 13px; color: #6F819C;
+  }
+  .kind { margin: 0; font-family: var(--font-mono); font-size: 13px; color: #8FA0B8; }
+  h3 { font-size: 22px; }
+  .summary { margin: 0; color: var(--muted); font-size: 15.5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .tags span {
+    padding: 4px 10px; border-radius: 6px; background: var(--surface-2);
+    font-family: var(--font-mono); font-size: 12.5px; color: #B6C4D8;
+  }
+  .more { color: var(--accent); font-weight: 600; font-size: 15px; }
+</style>

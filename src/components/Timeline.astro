@@ -1,0 +1,84 @@
+---
+const steps = [
+  {
+    date: '09/2024 - EN COURS',
+    type: 'Formation',
+    title: 'BACHELOR, ADMINISTRATION DES SYSTÈMES ET RÉSEAUX',
+    place: 'Geneva Institute of Technology',
+    text: 'Spécialisation Cloud, Réseau et Automatisation. Recherche d\'une alternance dès octobre 2026 (3 semaines entreprise / 1 semaine école).',
+    current: true,
+  },
+  {
+    date: '07/2026 - 08/2026',
+    type: 'Stage',
+    title: 'Modernisation IT du Showroom HP',
+    place: 'HP — Genève',
+    text: 'Projet de modernisation de l\'infrastructure IT du showroom, réalisé en équipe.',
+    link: 'https://hackmd.io/@Alexandra-ASSAGA/HkqBCktQMe',
+  },
+  {
+    date: '06/2026 - 07/2026',
+    type: 'Hackathon',
+    title: 'GITNova — Plateforme de VM à la demande',
+    place: 'Geneva Institute of Technology',
+    text: 'Plateforme de demande de VM validée par un administrateur et déployée automatiquement sur Infomaniak Public Cloud.',
+  },
+  {
+    date: 'À COMPLÉTER',
+    type: 'Secondaire',
+    title: 'BACCALAURÉAT GÉNÉRAL',
+    place: 'Lycée Bilingue de Bonaberi - Douala, Cameroun',
+    text: 'MATHÉMATIQUES / PHYSIQUE-CHIMIE.',
+  },
+];
+---
+
+<section id="parcours" class="container path">
+  <p class="kicker">03 / parcours</p>
+  <h2>Parcours</h2>
+
+  <ol class="timeline">
+    {steps.map((s) => (
+      <li class:list={['step', { current: s.current }]}>
+        <span class="dot"></span>
+        <div class="meta">
+          <span class="date">{s.date}</span>
+          <span class="type">{s.type}</span>
+        </div>
+        <h3>{s.title}</h3>
+        <p class="place">{s.place}</p>
+        <p class="text">{s.text}</p>
+        {s.link && <a class="more" href={s.link} target="_blank" rel="noopener">Voir la documentation ↗</a>}
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .path { padding-top: 96px; padding-bottom: 32px; scroll-margin-top: 80px; }
+  .kicker { margin: 0; font-family: var(--font-mono); color: var(--accent); }
+  h2 { font-size: clamp(32px, 5vw, 48px); margin: 8px 0 48px; }
+
+  .timeline { list-style: none; margin: 0; padding: 0 0 0 32px; border-left: 2px solid var(--border); max-width: 780px; }
+  .step { position: relative; padding: 0 0 44px 8px; }
+  .step:last-child { padding-bottom: 0; }
+
+  .dot {
+    position: absolute; left: -42px; top: 4px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--bg, #0b1220); border: 2px solid var(--accent);
+  }
+  .current .dot { background: var(--accent); box-shadow: 0 0 0 6px rgba(92, 200, 232, 0.15); }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .date { font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+  .type {
+    padding: 2px 9px; border-radius: 6px; background: var(--surface-2);
+    font-family: var(--font-mono); font-size: 12px; color: #B6C4D8;
+  }
+  h3 { margin: 0 0 4px; font-size: 21px; }
+  .place { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .text { margin: 0; color: #C9D4E5; line-height: 1.6; }
+  .more { display: inline-block; margin-top: 10px; color: var(--accent); font-size: 15px; }
+  .more:hover { text-decoration: underline; }
+</style>

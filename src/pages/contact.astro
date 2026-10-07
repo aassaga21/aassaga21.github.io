@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+
+const email = 'alexandra.assaga@gmail.com'; // ← à remplacer
+
+const links = [
+  { label: 'Email', value: email, href: `mailto:${email}`, hint: 'Le plus rapide pour me joindre' },
+  { label: 'LinkedIn', value: 'linkedin.com/in/alexandra-assaga', href: 'https://www.linkedin.com/in/alexandra-assaga', hint: 'Parcours et expériences' },
+  { label: 'GitHub', value: 'github.com/aassaga21', href: 'https://github.com/aassaga21', hint: 'Code et infrastructure as code' },
+  { label: 'HackMD', value: '@Alexandra-ASSAGA', href: 'https://hackmd.io/@Alexandra-ASSAGA', hint: 'Documentation technique des projets' },
+];
+---
+
+<Layout title="Contact — Alexandra Assaga">
+  <Header />
+
+  <section class="contact">
+    <p class="kicker">03 / contact</p>
+    <h1>Travaillons ensemble</h1>
+
+    <p class="intro">
+      Je recherche une <strong>alternance ou un CDI à partir d'octobre 2026</strong>
+      en cloud, réseau et automatisation, dans la région de Genève et en France voisine
+      (ouverte à Annecy, Lyon, Lausanne et Fribourg).
+    </p>
+
+    <div class="status">
+      <span class="dot"></span>
+      Disponible — Bachelor Systèmes et Réseaux, Geneva Institute of Technology
+    </div>
+
+    <div class="grid">
+      {links.map((l) => (
+        <a
+          class="card"
+          href={l.href}
+          target={l.href.startsWith('http') ? '_blank' : undefined}
+          rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        >
+          <span class="label">{l.label}</span>
+          <span class="value">{l.value}</span>
+          <span class="hint">{l.hint}</span>
+          <span class="arrow">→</span>
+        </a>
+      ))}
+    </div>
+
+    <form id="contact-form" class="form" action="https://formspree.io/f/xppqwrgy" method="POST">
+      <p class="kicker"> Envoyez un message</p>
+
+      <div class="row">
+        <label>
+          Nom
+          <input type="text" name="nom" required placeholder="Jean Dupont" />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required placeholder="jean@entreprise.ch" />
+        </label>
+      </div>
+
+      <label>
+        Entreprise <span class="opt">(optionnel)</span>
+        <input type="text" name="entreprise" placeholder="Nom de l'entreprise" />
+      </label>
+
+      <label>
+        Message
+        <textarea name="message" rows="6" required placeholder="Bonjour Alexandra, ..."></textarea>
+      </label>
+
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+      <button type="submit">Envoyer le message →</button>
+      <p id="form-status" class="form-status" aria-live="polite"></p>
+    </form>
+
+    <p class="location">Basée à Saint-Julien-en-Genevois · à 10 min de Genève</p>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const status = document.getElementById('form-status')!;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button')!;
+    btn.disabled = true;
+    status.textContent = 'Envoi en cours...';
+    status.className = 'form-status';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) throw new Error();
+      form.reset();
+      status.textContent = '✓ Message envoyé, merci ! Je vous réponds rapidement.';
+      status.classList.add('ok');
+    } catch {
+      status.textContent = "✗ Erreur d'envoi. Écrivez-moi directement par email.";
+      status.classList.add('err');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .contact { max-width: 1100px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+
+  .kicker {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    color: var(--accent, #5cc8e8);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin: 0.4rem 0 1.5rem; color: var(--text, #f1f5f9); }
+
+  .intro { max-width: 680px; font-size: 1.15rem; line-height: 1.7; color: var(--muted, #94a3b8); margin: 0 0 1.5rem; }
+  .intro strong { color: var(--text, #f1f5f9); font-weight: 600; }
+
+  .status {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.9rem;
+    color: var(--muted, #94a3b8);
+    border: 1px solid var(--border, #1e2a3d); border-radius: 999px;
+    padding: 0.45rem 1rem; margin-bottom: 3rem;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+
+  .card {
+    position: relative; display: flex; flex-direction: column; gap: 0.35rem;
+    padding: 1.6rem; background: var(--card, #0f1a2b);
+    border: 1px solid var(--border, #1e2a3d); border-radius: 14px;
+    text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent, #5cc8e8); transform: translateY(-3px); }
+  .label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.85rem; color: var(--accent, #5cc8e8); }
+  .value { font-size: 1.05rem; font-weight: 600; color: var(--text, #f1f5f9); word-break: break-all; }
+  .hint { font-size: 0.9rem; color: var(--muted, #94a3b8); }
+  .arrow { position: absolute; top: 1.4rem; right: 1.4rem; color: var(--muted, #94a3b8); transition: transform 0.2s, color 0.2s; }
+  .card:hover .arrow { color: var(--accent, #5cc8e8); transform: translateX(4px); }
+
+  .form {
+    margin-top: 3.5rem; padding: 2rem;
+    background: var(--card, #0f1a2b);
+    border: 1px solid var(--border, #1e2a3d); border-radius: 14px;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+  .form label {
+    display: flex; flex-direction: column; gap: 0.45rem;
+    font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.85rem;
+    color: var(--accent, #5cc8e8);
+  }
+  .opt { color: var(--muted, #94a3b8); }
+  .form input, .form textarea {
+    font-family: system-ui, sans-serif; font-size: 1rem;
+    color: var(--text, #f1f5f9); background: rgba(11, 18, 32, 0.6);
+    border: 1px solid var(--border, #1e2a3d); border-radius: 10px;
+    padding: 0.8rem 1rem; resize: vertical; transition: border-color 0.2s;
+  }
+  .form input:focus, .form textarea:focus { outline: none; border-color: var(--accent, #5cc8e8); }
+  .form button {
+    align-self: flex-start;
+    font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.95rem;
+    color: #0b1220; background: var(--accent, #5cc8e8);
+    border: none; border-radius: 10px; padding: 0.85rem 1.5rem;
+    cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+  }
+  .form button:hover { transform: translateY(-2px); }
+  .form button:disabled { opacity: 0.6; cursor: wait; }
+  .form-status { margin: 0; font-size: 0.95rem; color: var(--muted, #94a3b8); }
+  .form-status.ok { color: #34d399; }
+  .form-status.err { color: #f87171; }
+
+  .location { margin-top: 3rem; font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.9rem; color: var(--muted, #94a3b8); }
+</style>

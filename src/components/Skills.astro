@@ -1,0 +1,67 @@
+---
+const groups = [
+  {
+    title: 'Cloud',
+    icon: '☁',
+    items: ['Microsoft Azure', 'Azure Arc', 'Azure Monitor', 'Infomaniak Public Cloud', 'OpenStack'],
+  },
+  {
+    title: 'Réseau & Sécurité',
+    icon: '⛨',
+    items: ['Sophos Firewall', 'pfSense', 'VPN IPsec', 'Snort', 'Splunk', 'PNETLab'],
+  },
+  {
+    title: 'Automatisation & IaC',
+    icon: '⚙',
+    items: ['Terraform', 'Ansible', 'GitHub Actions', 'Git', 'PowerShell', 'Bash'],
+  },
+  {
+    title: 'Systèmes',
+    icon: '▣',
+    items: ['Windows Server 2025', 'Active Directory', 'SCCM', 'Microsoft Intune', 'Linux'],
+  },
+];
+---
+
+<section id="competences" class="container skills">
+  <p class="kicker">02 / compétences</p>
+  <h2>Compétences techniques</h2>
+
+  <div class="grid">
+    {groups.map((g) => (
+      <div class="card">
+        <div class="head">
+          <span class="icon">{g.icon}</span>
+          <h3>{g.title}</h3>
+        </div>
+        <ul>
+          {g.items.map((i) => <li>{i}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .skills { padding-top: 96px; padding-bottom: 32px; scroll-margin-top: 80px; }
+  .kicker { margin: 0; font-family: var(--font-mono); color: var(--accent); }
+  h2 { font-size: clamp(32px, 5vw, 48px); margin: 8px 0 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .card {
+    padding: 26px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .icon {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    border-radius: 10px; background: var(--surface-2); color: var(--accent); font-size: 18px;
+  }
+  h3 { margin: 0; font-size: 19px; }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  li {
+    padding: 5px 11px; border-radius: 6px; background: var(--surface-2);
+    font-family: var(--font-mono); font-size: 13px; color: #B6C4D8;
+  }
+</style>

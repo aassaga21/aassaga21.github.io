@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+
+export async function getStaticPaths() {
+  const modules = import.meta.glob('../../data/projets/*.md', { eager: true });
+  return Object.entries(modules).map(([path, mod]: [string, any]) => ({
+    params: { slug: path.split('/').pop()!.replace('.md', '') },
+    props: { p: mod.frontmatter, Content: mod.Content },
+  }));
+}
+
+const { p, Content } = Astro.props;
+---
+
+<Layout title={p.title + ' - Alexandra Assaga'} description={p.summary}>
+  <Header />
+  <main class="container page">
+    <a href="/#projets" class="back">&larr; Retour aux projets</a>
+
+    <p class="kind">{p.kind}</p>
+    <h1>{p.title}</h1>
+    <p class="summary">{p.summary}</p>
+
+    <div class="tags">
+      {p.tags.map((t: string) => <span>{t}</span>)}
+    </div>
+
+    {p.hackmd && (
+      <a class="btn" href={p.hackmd} target="_blank" rel="noopener">
+        Documentation technique compl&egrave;te &nearr;
+      </a>
+    )}
+
+    <div class="schema">[sch&eacute;ma d'architecture]</div>
+
+    <article class="content">
+      <Content />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .page { max-width: 820px; padding-top: 56px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 18px; }
+  .back { color: var(--muted); font-size: 15px; }
+  .back:hover { color: var(--text); }
+  .kind { margin: 16px 0 0; font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+  h1 { font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.01em; }
+  .summary { margin: 0; color: var(--muted); font-size: 19px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags span { padding: 4px 10px; border-radius: 6px; background: var(--surface-2); font-family: var(--font-mono); font-size: 12.5px; color: #B6C4D8; }
+  .btn { align-self: flex-start; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border: 1px solid var(--accent); border-radius: 10px; color: var(--accent); font-weight: 600; }
+  .btn:hover { background: var(--accent); color: var(--bg); }
+  .schema { margin-top: 12px; height: 280px; border-radius: 14px; border: 1px dashed #2A3B57; background: var(--surface); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 14px; color: #6F819C; }
+  .content :global(h2) { font-size: 26px; margin: 36px 0 10px; }
+  .content :global(p), .content :global(li) { color: #C9D4E5; }
+  .content :global(code) { font-family: var(--font-mono); font-size: 0.9em; background: var(--surface-2); padding: 2px 6px; border-radius: 4px; }
+</style>
